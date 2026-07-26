@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import { useState } from "react";
 
 interface Product {
   id: string;
@@ -9,28 +10,69 @@ interface Product {
   price: number;
   image: string;
   category: string;
+  description?: string;
 }
 
-export default function ProductCard({ id, name, price, image, category }: Product) {
+export default function ProductCard({ id, name, price, image, category, description }: Product) {
   const { addItem } = useCart();
+  const [wished, setWished] = useState(false);
+
+  const originalPrice = (price * 1.3).toFixed(2);
 
   return (
-    <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm hover:border-red-500/50 transition">
-      <img src={image} alt={name} className="h-52 w-full rounded-t-xl object-cover opacity-90" />
+    <div className="relative rounded-2xl border border-white/10 bg-[#111111] overflow-hidden hover:border-red-500/30 transition">
+      {/* NEW badge */}
+      <div className="absolute top-3 left-3 z-10 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md">
+        NEW
+      </div>
+
+      {/* Wishlist button */}
+      <button
+        onClick={() => setWished(!wished)}
+        className="absolute top-3 right-3 z-10 h-9 w-9 rounded-full border border-white/20 bg-black/40 flex items-center justify-center hover:border-red-500 transition"
+      >
+        <span className={wished ? "text-red-500" : "text-white"}>♥</span>
+      </button>
+
+      {/* Image */}
+      <div className="h-64 w-full overflow-hidden bg-[#1a1a1a]">
+        <img src={image} alt={name} className="w-full h-full object-cover" />
+      </div>
+
+      {/* Info */}
       <div className="p-4">
-        <span className="text-xs font-medium tracking-widest text-red-400 uppercase">{category}</span>
-        <h3 className="mt-1 text-lg font-semibold text-white">{name}</h3>
-        <p className="mt-1 text-xl font-bold text-red-500">£{price}</p>
+        <h3 className="text-lg font-bold text-white">{name}</h3>
+        {description && (
+          <p className="mt-1 text-sm text-white/40 line-clamp-2">{description}</p>
+        )}
+
+        {/* Stars */}
+        <div className="mt-2 flex items-center gap-1">
+          <span className="text-yellow-400 text-sm">★★★★</span>
+          <span className="text-yellow-400/50 text-sm">★</span>
+          <span className="text-white/40 text-xs ml-1">(128)</span>
+        </div>
+
+        {/* Price */}
+        <div className="mt-2 flex items-center gap-3">
+          <span className="text-2xl font-bold text-white">£{price}</span>
+          <span className="text-sm text-white/30 line-through">£{originalPrice}</span>
+        </div>
+
+        {/* Buttons */}
         <div className="mt-4 flex gap-2">
+          <Link
+            href={`/products/${id}`}
+            className="h-11 w-11 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center text-white hover:border-red-500 transition flex-shrink-0"
+          >
+            🛒
+          </Link>
           <button
             onClick={() => addItem({ id, name, price, image, quantity: 1 })}
-            className="flex-1 rounded-full bg-red-500 py-2 text-sm font-semibold text-white hover:bg-red-600 transition"
+            className="flex-1 rounded-xl bg-red-500 py-2 text-sm font-bold text-white hover:bg-red-600 transition"
           >
             Add to Cart
           </button>
-          <Link href={`/products/${id}`} className="flex-1 rounded-full border border-white/20 py-2 text-center text-sm font-semibold text-white/70 hover:border-red-500 hover:text-white transition">
-            View
-          </Link>
         </div>
       </div>
     </div>
