@@ -15,7 +15,12 @@ exports.signup = async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-    res.cookie("token", token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
+    res.cookie("token", token, { 
+  httpOnly: true, 
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+  sameSite: "none",
+  secure: true
+});
     res.status(201).json({ message: "Signup successful", user: { id: user._id, name: user.name, email: user.email } });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -35,7 +40,12 @@ exports.login = async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-    res.cookie("token", token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
+    res.cookie("token", token, { 
+  httpOnly: true, 
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+  sameSite: "none",
+  secure: true
+});
     res.json({ message: "Login successful", user: { id: user._id, name: user.name, email: user.email } });
   } catch (err) {
     res.status(500).json({ message: err.message });

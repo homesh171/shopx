@@ -41,7 +41,7 @@ const handleSubmit = async () => {
       const res = await api.post("/auth/signup", { name: form.name, email: form.email, password: form.password });
       setUser(res.data.user);
     }
-    window.location.href = "/";
+    router.push("/");
   } catch (err: any) {
     setError(err.response?.data?.message || "Something went wrong");
   } finally {

@@ -30,10 +30,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = async () => {
-    await api.post("/auth/logout");
-    setUser(null);
-    window.location.href = "/";
-  };
+  await api.post("/auth/logout");
+  setUser(null);
+};
 
   return (
     <AuthContext.Provider value={{ user, loading, setUser, logout }}>
