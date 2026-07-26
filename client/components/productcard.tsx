@@ -20,7 +20,7 @@ export default function ProductCard({ id, name, price, image, category, descript
   const originalPrice = (price * 1.3).toFixed(2);
 
   return (
-    <div className="relative rounded-2xl border border-white/10 bg-[#111111] overflow-hidden hover:border-red-500/30 transition">
+    <div className="relative rounded-2xl border border-white/10 bg-[#111111] overflow-hidden hover:border-red-500/30 transition group">
       {/* NEW badge */}
       <div className="absolute top-3 left-3 z-10 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md">
         NEW
@@ -34,16 +34,16 @@ export default function ProductCard({ id, name, price, image, category, descript
         <span className={wished ? "text-red-500" : "text-white"}>♥</span>
       </button>
 
-      {/* Image */}
-      <div className="h-64 w-full overflow-hidden bg-[#1a1a1a]">
-        <img src={image} alt={name} className="w-full h-full object-cover" />
+      {/* Image — full card */}
+      <div className="h-96 w-full overflow-hidden bg-[#1a1a1a]">
+        <img src={image} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
       </div>
 
-      {/* Info */}
-      <div className="p-4">
+      {/* Gradient overlay + content at bottom of image */}
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/90 to-transparent p-4 pt-16">
         <h3 className="text-lg font-bold text-white">{name}</h3>
         {description && (
-          <p className="mt-1 text-sm text-white/40 line-clamp-2">{description}</p>
+          <p className="mt-1 text-sm text-white/50 line-clamp-2">{description}</p>
         )}
 
         {/* Stars */}
